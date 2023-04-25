@@ -7,9 +7,17 @@ fetch("resume.json")
     showResume(0);
   });
 
+var filteredResumes = [];
+var currentResumeIndex = 0;
+
 // Show the data for a particular resume object
 function showResume(index) {
   var resume = resumeData[index];
+  currentResumeIndex = index;
+  displayResume(resume);
+}
+
+function displayResume(resume) {
   document.getElementById("name").textContent = resume.basics.name;
   document.getElementById("applied-for").textContent = resume.basics.AppliedFor;
   document.getElementById("phone").textContent = resume.basics.phone;
@@ -17,121 +25,122 @@ function showResume(index) {
   document.getElementById(
     "profiles"
   ).innerHTML = `<a href="${resume.basics.profiles.url}">LinkedIn</a>`;
-
-  //Build a location constant
   const location = resume.basics.location;
-
-  // Build a string containing the property names and values
   let locationText = "";
   for (const property in location) {
     locationText += `${location[property]}&nbsp`;
   }
-
-  // Populate the location field with the data
   const locationField = document.getElementById("address");
   locationField.innerHTML = locationText;
-
-  //Fill up skills field
   const skills = resume.skills.keywords
     .map((keyword) => `<p>${keyword}</p>`)
     .join("");
   document.getElementById("skills").innerHTML = skills;
-
-  //Fill up hobbies field
   const hobbies = resume.interests.hobbies
     .map((hobby) => `<p>${hobby}</p>`)
     .join("");
   document.getElementById("interests").innerHTML = hobbies;
-
-  //Build a experience constant
   const work = resume.work;
-
-  // Build a string containing the property names and values
   let workText = "";
   for (const property in work) {
     workText += `<p><strong>${property}:</strong> ${work[property]}</p>`;
   }
-
-  // Populate the experience field with the data
   const workField = document.getElementById("work");
   workField.innerHTML = workText;
-
-  //Build a internship constant
   const intern = resume.Internship;
-
-  // Build a string containing the property names and values
   let internText = "";
   for (const property in intern) {
     internText += `<p><strong>${property}:</strong> ${intern[property]}</p>`;
   }
-
-  // Populate the internship field with the data
   const internField = document.getElementById("internship");
   internField.innerHTML = internText;
 
-  //Build a projects constant
   const project = resume.projects;
-
-  // Build a string containing the property names and values
   let projectText = "";
   for (const property in project) {
     projectText += `<p><strong>${property}:</strong> ${project[property]}</p>`;
   }
-
-  // Populate the projects field with the data
   const projecctField = document.getElementById("projects");
   projecctField.innerHTML = projectText;
 
-  //Fill up education field
   const education = resume.education;
+  document.getElementById(
+    "ug"
+  ).innerHTML = `${education.UG.course} from ${education.UG.institute} (${education.UG["Start Date"]} - ${education.UG["End Date"]}), CGPA: ${education.UG.cgpa}`;
+  document.getElementById(
+    "senior-secondary"
+  ).innerHTML = `Senior Secondary from ${education["Senior Secondary"].institute}, CGPA: ${education["Senior Secondary"].cgpa}`;
+  document.getElementById(
+    "high-school"
+  ).innerHTML = `High School from ${education["High School"].institute}, CGPA: ${education["High School"].cgpa}`;
 
-  // Build a string containing the property names and values
-  let educationText = "";
-  for (const objectName in education) {
-    educationText += `${objectName}:\n`;
-    const obj = education[objectName];
-    for (const property in obj) {
-      educationText += `          ${property}: ${obj[property]}\n`;
+  const achievements = resume.achievements.Summary;
+  const achievementsList = document.getElementById("achievements");
+  achievementsList.innerHTML = "";
+  achievements.forEach((achievement) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = achievement;
+    achievementsList.appendChild(listItem);
+  });
+}
+
+function clearContent() {
+  document.getElementById("wrapper").textContent =
+    "No applications for this job!";
+  document.getElementsByClassName("navigation")[0].style.display = "none";
+}
+
+//Search function:
+
+function searchResume() {
+  document.getElementById("searchResult").innerHTML = ""; // Clear the error message
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  filteredResumes = resumeData.filter((resume) => {
+    const appliedFor = resume.basics.AppliedFor.toLowerCase();
+    return appliedFor.includes(query);
+  });
+
+  if (filteredResumes.length > 0) {
+    if (filteredResumes.length === 1) {
+      // Hide the "Previous" and "Next" buttons
+      document.getElementsByClassName("navigation")[0].style.display = "none";
+    } else {
+      // Show the "Previous" and "Next" buttons
+      document.getElementsByClassName("navigation")[0].style.display = "block";
     }
-    educationText += "\n";
+    currentResumeIndex = 0;
+    displayResume(filteredResumes[currentResumeIndex]);
+  } else {
+    clearContent();
   }
-
-  // Populate the education field with the data
-  const educationField = document.getElementById("education");
-  educationField.textContent = educationText;
-
-  //Build a achievements constant
-  const achieve = resume.achievements;
-
-  // Build a string containing the property names and values
-  let achieveText = "";
-  for (const property in achieve) {
-    achieveText += `<p><strong>${property}:</strong> ${achieve[property]}</p>`;
-  }
-
-  // Populate the achievements field with the data
-  const achieveField = document.getElementById("achievements");
-  achieveField.innerHTML = achieveText;
 }
 
 // Handle the click event for the "Previous" button
 function prevResume() {
-  var currentIndex = resumeData.findIndex(
-    (r) => r.basics.name === document.getElementById("name").innerHTML
-  );
-  if (currentIndex > 0) {
-    showResume(currentIndex - 1);
+  if (filteredResumes.length > 0) {
+    if (currentResumeIndex > 0) {
+      currentResumeIndex--;
+      displayResume(filteredResumes[currentResumeIndex]);
+    }
+  } else {
+    if (currentResumeIndex > 0) {
+      currentResumeIndex--;
+      displayResume(resumeData[currentResumeIndex]);
+    }
   }
 }
 
 // Handle the click event for the "Next" button
 function nextResume() {
-  var currentIndex = resumeData.findIndex(
-    (r) => r.basics.name === document.getElementById("name").innerHTML
-  );
-  if (currentIndex < resumeData.length - 1) {
-    showResume(currentIndex + 1);
+  if (filteredResumes.length > 0) {
+    if (currentResumeIndex < filteredResumes.length - 1) {
+      currentResumeIndex++;
+      displayResume(filteredResumes[currentResumeIndex]);
+    }
+  } else {
+    if (currentResumeIndex < resumeData.length - 1) {
+      currentResumeIndex++;
+      displayResume(resumeData[currentResumeIndex]);
+    }
   }
 }
-
-function searchResume() {}
