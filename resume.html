@@ -14,50 +14,53 @@
       <button onclick="searchResume()">Search</button>
     </div>
     <div id="searchResult"></div>
+    <div id="error-message"></div>
 
     <div class="navigation">
       <button onclick="prevResume()">Previous</button>
       <button onclick="nextResume()">Next</button>
     </div>
 
-    <header>
-      <div>
-        <h1 id="name"></h1>
-        <h4 id="applied-for"></h4>
+    <div id="wrapper">
+      <header>
+        <div>
+          <h1 id="name"></h1>
+          <h4 id="applied-for"></h4>
+        </div>
+        <img id="image" src="" alt="image" />
+      </header>
+
+      <div id="info-box">
+        <h3>Personal Info</h3>
+        <p id="email"></p>
+        <p id="phone"></p>
+        <p id="profiles"></p>
+        <p id="address"></p>
+
+        <h3>Skills</h3>
+        <p id="skills"></p>
+
+        <h3>Interests</h3>
+        <article id="interests"></article>
       </div>
-      <img id="image" src="" alt="image" />
-    </header>
 
-    <div id="info-box">
-      <h3>Personal Info</h3>
-      <p id="email"></p>
-      <p id="phone"></p>
-      <p id="profiles"></p>
-      <p id="address"></p>
-
-      <h3>Skills</h3>
-      <p id="skills"></p>
-
-      <h3>Interests</h3>
-      <article id="interests"></article>
+      <main>
+        <h2>Work Experience:</h2>
+        <article id="work"></article>
+        <h2>Internship:</h2>
+        <article id="internship"></article>
+        <h2>Projects:</h2>
+        <article id="projects"></article>
+        <h2>Education:</h2>
+        <ul>
+          <li id="ug"></li>
+          <li id="senior-secondary"></li>
+          <li id="high-school"></li>
+        </ul>
+        <h2>Achievements:</h2>
+        <ul id="achievements"></ul>
+      </main>
     </div>
-
-    <main>
-      <h3>Work Experience:</h3>
-      <article id="work"></article>
-      <h3>Internship:</h3>
-      <article id="internship"></article>
-      <h3>Projects:</h3>
-      <article id="projects"></article>
-      <h3>Education:</h3>
-      <ul>
-        <li id="ug"></li>
-        <li id="senior-secondary"></li>
-        <li id="high-school"></li>
-      </ul>
-      <h3>Achievements:</h3>
-      <ul id="achievements"></ul>
-    </main>
   </body>
   <script src="resume.js"></script>
   <script src="resume.json"></script>
