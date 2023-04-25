@@ -1,5 +1,11 @@
 body {
   font-family: Arial, sans-serif;
+  margin: 30px;
+  background-color: honeydew;
+}
+
+main {
+  margin-top: 10px;
 }
 
 .search-container {
@@ -40,6 +46,17 @@ body {
   background-color: #0056b3;
 }
 
+#error-message {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 24px;
+  color: red;
+}
+
 .navigation {
   text-align: center;
   margin: 10px 0;
@@ -67,12 +84,19 @@ body {
   cursor: not-allowed;
 }
 
+#wrapper {
+  margin-top: 10px;
+  padding: 10px;
+}
+
 #info-box {
+  margin-top: 10px;
   background-color: #eee;
   padding: 20px;
   width: 200px;
   float: left;
   font-size: small;
+  border: 1.5px solid #333;
 }
 
 #info-box span {
@@ -89,6 +113,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: 1.5px solid #333;
 }
 
 h1 {
